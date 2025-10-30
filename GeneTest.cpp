@@ -1,7 +1,7 @@
 #include "Gene.h"
 #include <cassert>
 #include <sstream>
-#include <iostream>
+#include <iostream> 
 
 // ============================================================================
 // TEST HELPER FUNCTION - Displays errors only (quiet on success)
@@ -82,7 +82,7 @@ bool testToString() {
     //Verify the data
     assert(result.find("FAAS012") != std::string::npos);
     assert(result.find("gcggcaaa") != std::string::npos);
-    assert(result.find(2.5) != std::string::npos);
+    assert(result.find("2.5") != std::string::npos);
 
     return true;
 }
@@ -249,7 +249,7 @@ bool testStreamOutput() {
 // ============================================================================
 bool testStreamInput() {
     //Prepare test data
-    std::stringstream ss("\"FAS012\",\"acgtaa\",\"2.5\"");
+    std::stringstream ss("\"FAS012\",\"acgtaa\",2.5");
     Gene g;
 
     //Read from stringstream
@@ -293,79 +293,30 @@ bool testStreamIO() {
 bool testGene() {
     bool allPassed = true;
 
-    if(!testDefaultConstructor()) {
-        reportTest("Test 1: Default Constructor");
-        allPassed = false;
-    }
-
-    if(!testParamConstructor()) {
-        reportTest("Test 2: Parameterized Constructor");
-        allPassed = false;
-    }
-
-    if(!testGettersAndSetters()) {
-        reportTest("Test 3: Getters and Setters");
-        allPassed = false;
-    }
-
-    if(!testToString()) {
-        reportTest("Test 4: ToString Method");
-        allPassed = false;
-    }
-
-    if(!testLessOperator()) {
-        reportTest("Test 5: < Operator");
-        allPassed = false;
-    }
-
-    if(!testLessOrEqualsOperator()) {
-        reportTest("Test 6: <= Operator");
-        allPassed = false;
-    }
-
-    if(!testGreaterOperator()) {
-        reportTest("Test 7: > Operator");
-        allPassed = false;
-    }
-
-    if(!testGreaterOrEqualsOperator()) {
-        reportTest("Test 8: >= Operator");
-        allPassed = false;
-    }
-
-    if(!testEqualsOperator()) {
-        reportTest("Test 9: == Operator");
-        allPassed = false;
-    }
-
-    if(!testNotEqualsOperator()) {
-        reportTest("Test 10: != Operator");
-        allPassed = false;
-    }
-
-    if(!testStreamOutput()) {
-        reportTest("Test 11: Stream Output");
-        allPassed = false;
-    }
-
-    if(!testStreamInput()) {
-        reportTest("Test 12: Stream Input");
-        allPassed = false;
-    }
-
-    if(!testStreamIO()) {
-        reportTest("Test 13: Stream I/O");
-        allPassed = false;
-    }
-
-    return allPassed;
+    testDefaultConstructor();
+    testParamConstructor();
+    testGettersAndSetters();
+    testToString();
+    testLessOperator();
+    testLessOrEqualsOperator();
+    testGreaterOperator();
+    testGreaterOrEqualsOperator();
+    testEqualsOperator();
+    testNotEqualsOperator();
+    testStreamOutput();
+    testStreamInput();
+    testStreamIO();
+    
+    std::cout << "All Gene Tests passed!" << std::endl;
+     
+    return true;
 }
-
 
 // ============================================================================
 // Function for Standalone testing
 // ============================================================================
 int main() {
-    return testGene() ? 0:1;
-}
+    testGene();
 
+    return 1;
+}

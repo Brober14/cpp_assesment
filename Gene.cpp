@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <iomanip>
+#include <iomanip> 
 
 
 //Constructors logic
@@ -87,6 +87,7 @@ bool Gene::operator!=(const Gene &gene2) const {
 //Output operator
 std::ostream& operator<<(std::ostream &os, Gene &gene){
     os << std::quoted(gene.id) << "," << std::quoted(gene.sequence) << "," << gene.propensity;
+    return os;
 }
 
 //Input operator

@@ -2,7 +2,7 @@
 #define GENE_H
 
 #include <string>
-#include <iostream>
+#include <iostream> 
 
 class Gene {
     private:
