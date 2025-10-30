@@ -4,7 +4,7 @@ File        : main.cpp
 
 Date        : Tuesday 15th July 2025
 
-Author      : Gavin Cawley
+Author      : Gavin Cawley 
 
 Description : Prototype implementation of a program to identify genes with
               the greatest propensity for glucose response, based on the
@@ -52,33 +52,35 @@ int main()
 {
    // load the database of Arabidopsis promoter sequences
 
-   vector<Gene> genes;
+   vector<Gene*> genes;
 
-   Gene gene;
-
-   ifstream is("arabidopsis.csv", ifstream::in);
-
-   while (is >> gene)
-   {
-      genes.push_back(gene);
+   Gene* genePtr;
+   ifstream in("arabidopsis.csv");
+   while (in) {
+      genePtr = new Gene();
+      if (in >> *genePtr) {
+         genes.push_back(genePtr);
+      } else {
+         delete genePtr;  // In case of failed read to prevent leak
+      }
    }
+   in.close();
 
-   is.close();
 
    // compute the glucose response propensity for each gene
 
-   for (Gene &g : genes)
+   for (Gene* g : genes)
    {
-      g.setPropensity(propensity(g.getSequence(), nullptr));
+      g->setPropensity(propensity(g->getSequence(), nullptr));
    }
 
    // sort genes in order of their propensity for glucose response
 
-   bubbleSort(genes, [](const Gene &a, const Gene &b) {return a < b;});
+   bubbleSort(genes, [](const Gene *a, const Gene *b) { return *a > *b; });
 
    // display the protein with the highest propensity for glucose response
 
-   displayGene(genes[0]);
+   displayGene(*genes[0]);
 
    // save list of the top 20 up-regulated genes for subsequent analyses
 
@@ -86,10 +88,16 @@ int main()
 
    for (size_t i = 0; i < 20; i++)
    {
-      os << genes[i] << endl;
+      os << *genes[i] << endl;
    }
 
    os.close();
+
+   for (Gene* g : genes) {
+      delete g;  // Free dynamically allocated memory
+   }
+   genes.clear();
+  
 
    return EXIT_SUCCESS;
 }
